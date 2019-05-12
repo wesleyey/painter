@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("colorPick__color");
 const range = document.getElementById("js-range");
 const mode = document.getElementById("js-mode");
+const save = document.getElementById("js-save");
 
 canvas.width = 650;
 canvas.height = 650;
@@ -63,12 +64,25 @@ function fillCanvas() {
   }
 }
 
+function preventRightClick(event) {
+  event.preventDefault();
+}
+
+function saveClick() {
+  const image = canvas.toDataURL("image/png");
+  const link = document.createElement("a");
+  link.href = image;
+  link.download = "example";
+  link.click();
+}
+
 if (canvas) {
   canvas.addEventListener("mousemove", onMouseMove);
   canvas.addEventListener("mousedown", startPainting);
   canvas.addEventListener("mouseup", stopPainting);
   canvas.addEventListener("mouseleave", stopPainting);
   canvas.addEventListener("click", fillCanvas);
+  canvas.addEventListener("contextmenu", preventRightClick);
 }
 
 Array.from(colors).forEach(function(item) {
@@ -86,4 +100,8 @@ if (range) {
 
 if (mode) {
   mode.addEventListener("click", modeChange);
+}
+
+if (save) {
+  save.addEventListener("click", saveClick);
 }
